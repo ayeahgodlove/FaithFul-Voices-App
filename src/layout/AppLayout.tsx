@@ -1,9 +1,11 @@
 import React from "react";
-import { Breadcrumb, Layout, theme } from "antd";
+import { Breadcrumb, Layout } from "antd";
 import "./app-layout.scss";
+import { useTheme } from "../hook/shared/theme.hook";
 
 const { Header, Content, Footer } = Layout;
-
+import { ConfigProvider, theme } from "antd";
+const { defaultAlgorithm, darkAlgorithm } = theme;
 interface Props {
   content: React.ReactNode;
 }
@@ -11,20 +13,31 @@ const AppLayout: React.FC<Props> = ({ content }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const { isDarkMode } = useTheme();
 
   return (
-    <Layout>
-      <Header
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1,
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {/* <Menu
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+        token: {
+          colorPrimary: "#08a30a",
+          colorLink: "#214e0a",
+          fontFamily: "Poppins",
+        },
+      }}
+    >
+      <Layout>
+        <Header
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {/* <Menu
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={["2"]}
@@ -33,23 +46,28 @@ const AppLayout: React.FC<Props> = ({ content }) => {
             label: `nav ${index + 1}`,
           }))}
         /> */}
-      </Header>
-      <Content className="site-layout" style={{ padding: "0 50px" }}>
-        <Breadcrumb style={{ margin: "16px 0" }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
-        <div
-          style={{ padding: 24, minHeight: "100vh", background: colorBgContainer }}
-        >
-          {content}
-        </div>
-      </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2023 Created by Ant UED
-      </Footer>
-    </Layout>
+        </Header>
+        <Content className="site-layout" style={{ padding: "0 50px" }}>
+          <Breadcrumb style={{ margin: "16px 0" }}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item>
+          </Breadcrumb>
+          <div
+            style={{
+              padding: 24,
+              minHeight: "100vh",
+              background: colorBgContainer,
+            }}
+          >
+            {content}
+          </div>
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          Ant Design ©2023 Created by Ant UED
+        </Footer>
+      </Layout>
+    </ConfigProvider>
   );
 };
 
