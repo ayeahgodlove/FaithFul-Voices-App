@@ -1,15 +1,16 @@
 import React from "react";
-import { Breadcrumb, Layout } from "antd";
+import {  Layout, Typography } from "antd";
 import "./app-layout.scss";
 import { useTheme } from "../hook/shared/theme.hook";
 
 const { Header, Content, Footer } = Layout;
 import { ConfigProvider, theme } from "antd";
+import { DARK_COLOR, FONT_FAMILY, ORANGE_LIGHT, PRIMARY_COLOR } from "../utils/utilities";
 const { defaultAlgorithm, darkAlgorithm } = theme;
 interface Props {
-  content: React.ReactNode;
+  children: React.ReactNode;
 }
-const AppLayout: React.FC<Props> = ({ content }) => {
+const AppLayout: React.FC<Props> = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -20,9 +21,10 @@ const AppLayout: React.FC<Props> = ({ content }) => {
       theme={{
         algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
         token: {
-          colorPrimary: "#08a30a",
-          colorLink: "#214e0a",
-          fontFamily: "Poppins",
+          colorPrimary: PRIMARY_COLOR,
+          colorLink: ORANGE_LIGHT,
+          fontFamily: FONT_FAMILY,
+          colorPrimaryBg: PRIMARY_COLOR
         },
       }}
     >
@@ -35,32 +37,22 @@ const AppLayout: React.FC<Props> = ({ content }) => {
             width: "100%",
             display: "flex",
             alignItems: "center",
-          }}
+            justifyContent: 'center',
+            background: PRIMARY_COLOR
+          }}  
         >
-          {/* <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-          items={new Array(3).fill(null).map((_, index) => ({
-            key: String(index + 1),
-            label: `nav ${index + 1}`,
-          }))}
-        /> */}
+          <Typography.Title level={4} style={{ marginBottom: 20, color: DARK_COLOR}}>FaithFul Voices</Typography.Title>
         </Header>
         <Content className="site-layout" style={{ padding: "0 50px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             style={{
               padding: 24,
               minHeight: "100vh",
               background: colorBgContainer,
+              marginTop: 20
             }}
           >
-            {content}
+            {children}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

@@ -2,6 +2,7 @@ import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import { themeReducer } from "../slice/shared/theme.slice";
+import sessionStorage from 'redux-persist/lib/storage';
 
 const reducer = combineReducers({
     theme: themeReducer,
@@ -10,13 +11,14 @@ const reducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage: sessionStorage,
-  whitelist: ["auth", "user", "theme", "token"], // Specify the reducers you want to persist
+  whitelist: ["theme"], // Specify the reducers you want to persist
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}),
   devTools: true, //change when deploying
 });
 
