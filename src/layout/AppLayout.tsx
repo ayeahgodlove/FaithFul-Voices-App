@@ -12,7 +12,7 @@ interface Props {
 }
 const AppLayout: React.FC<Props> = ({ children }) => {
   const {
-    token: { colorBgContainer },
+    // token: { colorBgContainer },
   } = theme.useToken();
   const { isDarkMode } = useTheme();
 
@@ -48,7 +48,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
             style={{
               padding: 24,
               minHeight: "100vh",
-              background: colorBgContainer,
+              background: "transparent!",
               marginTop: 20
             }}
           >
