@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { api } from "../api/index";
 import { IEpisodeState, emptyEpisode } from "../model/episode.model";
+import { axiosInstance } from "../api";
 
 // Slice
 
@@ -31,7 +31,7 @@ const { episodesSuccess } = slice.actions;
 
 export const fetchEpisodes = () => async (dispatch) => {
   try {
-    await api
+    await axiosInstance
       .get("/episodes")
       .then((response) => dispatch(episodesSuccess(response.data)));
   } catch (e) {
