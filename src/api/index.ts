@@ -18,20 +18,3 @@ export const axiosInstance2: AxiosInstance = axios.create({
   },
 });
 
-export const test = () => {
-  return axiosInstance2.post("/oauth/token", {
-    grant_type: "client_credentials",
-  });
-};
-export const loginDialog = () => {
-  return axiosInstance.get(
-    "/dialog/oauth?redirect_uri=" +
-      process.env.VITE_APP_REDIRECT_URI +
-      "&scope=" +
-      process.env.VITE_APP_SCOPE +
-      "&response_type=" +
-      process.env.VITE_APP_RESPONSE_TYPE +
-      "&client_id=" +
-      process.env.VITE_APP_CLIENT_ID
-  );
-};

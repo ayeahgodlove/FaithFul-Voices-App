@@ -1,12 +1,11 @@
 import "./App.css";
-import IndexPage from "./pages/Index";
+import { RouterProvider } from "react-router-dom";
+import { appRouter } from "./routes/app-routes.component";
 
 function App() {
-  // const apiUrl = process.env.VITE_APP_API_URL;
-
   return (
     <>
-      <IndexPage />
+      <RouterProvider router={appRouter} />
     </>
   );
 }
