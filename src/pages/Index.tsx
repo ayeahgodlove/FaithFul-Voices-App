@@ -5,41 +5,27 @@ import { emptyEpisode } from "../model/episode.model";
 import { NowPlaying } from "../components/playing/playing.component";
 import { EpisodeList } from "../components/episode-card/episode-list.component";
 import { Typography } from "antd";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useToken } from "../hook/auth/token.hook";
 
 const IndexPage: React.FC = () => {
-  useEffect(() => {
-    const client_id = process.env.VITE_APP_CLIENT_ID;
-    const client_secret = process.env.VITE_APP_CLIENT_SECRET;
-    const uri = "https://api.podbean.com/v1/oauth/token";
-    const authString = `${client_id}:${client_secret}`;
-    const base64AuthString = btoa(authString);
-    // base 64 encode client_id and client_secret to use basic authentication scheme
-    const auth = "Basic " + base64AuthString;
+  const { user, getAccessTokenSilently } = useAuth0();
+  const { setToken, token } = useToken();
 
-    // set post request params
-    const options = {
-      method: "post",
-      body: "grant_type=client_credentials",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        Accept: "*/*",
-        Authorization: auth,
-        Connection: "keep-alive",
-        "Accept-Encoding": "gzip, deflate, br",
-      },
+  useEffect(() => {
+    const getUserMetadata = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently();
+
+        setToken(accessToken);
+      } catch (e) {
+        console.log("tes err: ", e.message);
+      }
     };
 
-    // fetch
-    fetch(uri, options)
-      .then((res) => res.json())
-      .then((data) => {
-        debugger;
-        return console.log(data);
-      })
-      .catch((err) => {
-        console.log("error: ", err.message);
-      });
-  }, []);
+    getUserMetadata();
+  }, [getAccessTokenSilently, user?.sub]);
+
   return (
     <AppLayout>
       <Typography.Title level={4} style={{ textAlign: "center", marginTop: 0 }}>

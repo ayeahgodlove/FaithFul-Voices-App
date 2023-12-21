@@ -3,9 +3,13 @@ import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import { themeReducer } from "../slice/shared/theme.slice";
 import sessionStorage from 'redux-persist/lib/storage';
+import { tokenReducer } from "../slice/token.slice";
+import { episodeReducer } from "../slice/episode.slice";
 
 const reducer = combineReducers({
     theme: themeReducer,
+    token: tokenReducer,
+    episode: episodeReducer
 });
 
 const persistConfig = {

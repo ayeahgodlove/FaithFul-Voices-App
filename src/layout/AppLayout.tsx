@@ -11,7 +11,7 @@ import {
   ORANGE_LIGHT,
   PRIMARY_COLOR,
 } from "../utils/utilities";
-// import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 const { defaultAlgorithm, darkAlgorithm } = theme;
 interface Props {
   children: React.ReactNode;
@@ -21,23 +21,8 @@ const AppLayout: React.FC<Props> = ({ children }) => {
     // token: { colorBgContainer },
   } = theme.useToken();
   const { isDarkMode } = useTheme();
-  // const navigate = useNavigate();
+  const { loginWithRedirect, logout  } = useAuth0();
 
-  const podbeanLogin = () => {
-    const authenticationWindow = window.open(
-      `${process.env.VITE_APP_API_URL}/dialog/oauth?redirect_uri=${process.env.VITE_APP_REDIRECT_URI}&scope=${process.env.VITE_APP_SCOPE}&response_type=${process.env.VITE_APP_RESPONSE_TYPE}&client_id=${process.env.VITE_APP_CLIENT_ID}`, // Your authentication URL
-      "_blank",
-      "width=600,height=400"
-    );
-
-    // You can handle post-authentication logic here
-    authenticationWindow.addEventListener("load", () => {
-      // Logic after authentication completes
-      console.log("Authentication complete");
-      // Close the authentication window if needed
-      authenticationWindow.close();
-    });
-  };
   return (
     <ConfigProvider
       theme={{
@@ -69,9 +54,16 @@ const AppLayout: React.FC<Props> = ({ children }) => {
           >
             FaithFul Voices
           </Typography.Title>
-          <Button type="primary" onClick={podbeanLogin}>
+          <Button type="default" onClick={() => loginWithRedirect()}>
             Login
           </Button>
+          <button
+            onClick={() =>
+              logout({ logoutParams: { returnTo: window.location.origin } })
+            }
+          >
+            Log Out
+          </button>
         </Header>
         <Content className="site-layout" style={{ padding: "0 50px" }}>
           <div
